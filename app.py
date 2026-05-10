@@ -9,11 +9,20 @@ from datetime import datetime
 
 # ── 페이지 설정 ───────────────────────────────────────────
 st.set_page_config(
-    page_title="SNS 자동 업로드",
+    page_title="PostAI - SNS 자동화",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+# ── 커스텀 스타일 적용 ────────────────────────────────────
+def load_custom_css():
+    css_file = Path(".streamlit/custom_style.css")
+    if css_file.exists():
+        with open(css_file, "r", encoding="utf-8") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+load_custom_css()
 
 # ── 공통 함수 ─────────────────────────────────────────────
 @st.cache_data(show_spinner=False)

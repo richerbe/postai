@@ -1,0 +1,103 @@
+╔════════════════════════════════════════════════════════════════╗
+║         🚀 PostAI 배포 - 빠른 시작 가이드                      ║
+╚════════════════════════════════════════════════════════════════╝
+
+📍 현재 상태:
+✅ 웹사이트 개발 완료 (Flask + Streamlit)
+✅ 모바일 앱 개발 완료 (React Native)
+✅ 로컬 실행 중 (localhost:8000, 8501)
+
+═══════════════════════════════════════════════════════════════════
+
+🌐 STEP 1: 웹 배포 (30분, 무료)
+
+┌─ GitHub 푸시 (5분)
+│  cd /Users/macbook/Desktop/자동화
+│  git remote add origin https://github.com/USERNAME/postai.git
+│  git push -u origin main
+
+├─ Streamlit Cloud (5분, 무료)
+│  https://streamlit.io/cloud
+│  → GitHub로 로그인 → postai 저장소 선택 → Deploy
+│  ✨ URL: https://USERNAME-postai.streamlit.app
+
+└─ Railway (5분, 무료)
+   https://railway.app
+   → GitHub로 로그인 → postai 저장소 선택 → Deploy
+   ✨ URL: https://postai.up.railway.app
+
+═══════════════════════════════════════════════════════════════════
+
+📱 STEP 2: 모바일 배포 (1-3일, $124 초기)
+
+필수 계정 생성:
+1️⃣  Expo (무료) → https://expo.dev
+2️⃣  Apple Developer ($99) → https://developer.apple.com
+3️⃣  Google Play ($25) → https://play.google.com/console
+
+iOS 배포:
+  cd /Users/macbook/Desktop/sns-mobile
+  npm install -g eas-cli
+  eas login
+  eas build --platform ios
+  eas submit --platform ios
+  ⏳ Apple 심사 (1-3일)
+  ✨ App Store에 나타남
+
+Android 배포:
+  eas build --platform android
+  eas submit --platform android
+  ⏳ Google 심사 (1-3시간)
+  ✨ Play Store에 나타남
+
+═══════════════════════════════════════════════════════════════════
+
+📊 배포 후 URL
+
+웹:
+  🌍 홈페이지: https://postai.up.railway.app
+  🤖 앱: https://USERNAME-postai.streamlit.app
+
+모바일:
+  🍎 iOS: App Store에서 "PostAI" 검색
+  🤖 Android: Play Store에서 "PostAI" 검색
+
+═══════════════════════════════════════════════════════════════════
+
+🎯 추천 진행 순서
+
+[ ] 1. 이 파일 읽기 (지금 완료!)
+[ ] 2. COMPLETE_DEPLOYMENT_GUIDE.md 읽기
+[ ] 3. GitHub에 코드 푸시
+[ ] 4. Streamlit Cloud 배포
+[ ] 5. Railway 배포
+[ ] 6. 계정 생성 (Apple, Google)
+[ ] 7. 모바일 앱 배포
+[ ] 8. 배포 후 테스트
+
+═══════════════════════════════════════════════════════════════════
+
+💡 팁
+
+• 웹 배포는 무료 (Streamlit Cloud + Railway 무료 크레딧)
+• 모바일 배포는 비용 필요 ($99 + $25)
+• 모바일은 심사 시간이 소요 (iOS: 1-3일, Android: 1-3시간)
+• 배포 후 정기 업데이트 권장 (월 1-2회)
+
+═══════════════════════════════════════════════════════════════════
+
+📚 상세 가이드
+
+웹 배포:     COMPLETE_DEPLOYMENT_GUIDE.md
+Streamlit:   STREAMLIT_DEPLOYMENT.md
+Railway:     RAILWAY_DEPLOYMENT.md
+모바일:      MOBILE_DEPLOY_QUICK.md
+
+═══════════════════════════════════════════════════════════════════
+
+준비 완료! 🎉 이제 배포를 시작하세요!
+
+Questions? 각 가이드를 읽거나 공식 문서를 확인하세요:
+• Streamlit: docs.streamlit.io
+• Railway: docs.railway.app
+• Expo: docs.expo.dev
