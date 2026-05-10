@@ -1,0 +1,51 @@
+general:
+  default_hashtags:
+  - '#자동화'
+  - '#콘텐츠마케팅'
+  - '#SNS마케팅'
+  image_max_size_mb: 8
+  video_max_size_mb: 500
+image_generation:
+  enabled: true
+  hf_token: ''
+  image_model: stabilityai/stable-diffusion-xl-base-1.0
+instagram:
+  enabled: true
+  password: '!asdf5091j5'
+  username: geumseok_jewellery
+naver_blog:
+  blog_id: review_jinsim
+  enabled: true
+  naver_id: end13802
+  naver_password: 8IWLK3hPKwRmSV
+openai:
+  api_key: AIzaSyBbjZ_nLCiaaskjnK035YQD0-whLq6lY2E
+  enabled: true
+  model: gemini-2.5-flash
+  temperature: 0.7
+scheduler:
+  enabled: true
+  timezone: Asia/Seoul
+threads:
+  enabled: true
+  password: '!asdf5091j5'
+  username: geumseok_jewellery
+users:
+  admin:
+    created_at: '2026-05-10T23:03:13.694368'
+    enabled: true
+    password: 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
+    role: 관리자
+wordpress:
+  default_category_id: 1
+  default_status: publish
+  enabled: true
+  password: YOUR_WP_APP_PASSWORD
+  url: https://your-wordpress-site.com
+  username: YOUR_WP_USERNAME
+youtube:
+  client_secrets_file: youtube_client_secrets.json
+  default_category: '22'
+  default_language: ko
+  default_privacy: public
+  enabled: true

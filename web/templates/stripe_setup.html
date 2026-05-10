@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Stripe 설정 필요 — PostAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f0f1a;color:#e8e8e8;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.logo{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#f39c12,#e056fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;
+  display:block;text-align:center;margin-bottom:40px}
+.card{background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:20px;
+  padding:40px;width:100%;max-width:560px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.icon{font-size:3rem;text-align:center;margin-bottom:20px;display:block}
+h1{font-size:1.4rem;font-weight:900;text-align:center;margin-bottom:8px}
+.sub{font-size:.85rem;color:#888;text-align:center;margin-bottom:28px}
+.steps{counter-reset:step}
+.step{display:flex;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.06)}
+.step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.step-num{width:32px;height:32px;background:linear-gradient(135deg,#f39c12,#e67e22);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.85rem;color:#000;flex-shrink:0;margin-top:2px}
+.step-content h3{font-size:.9rem;font-weight:700;margin-bottom:4px}
+.step-content p{font-size:.82rem;color:#999;line-height:1.6}
+.code{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;padding:12px 14px;font-family:monospace;font-size:.8rem;
+  color:#e8e8e8;margin-top:8px;white-space:pre-wrap;word-break:break-all}
+.btn{display:block;padding:13px;border-radius:10px;font-family:inherit;font-size:.9rem;
+  font-weight:700;text-decoration:none;text-align:center;margin-top:24px;transition:.2s}
+.btn-gold{background:linear-gradient(135deg,#f39c12,#e67e22);color:#000}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(243,156,18,.3)}
+.btn-ghost{background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1);margin-top:10px}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+.alert{background:rgba(243,156,18,.1);border:1px solid rgba(243,156,18,.25);
+  border-radius:10px;padding:14px 16px;font-size:.83rem;color:#f39c12;
+  margin-bottom:24px;text-align:center}
+</style>
+</head>
+<body>
+<a href="/" class="logo">✨ PostAI</a>
+
+<div class="card">
+  <span class="icon">⚙️</span>
+  <h1>Stripe 결제 설정이 필요합니다</h1>
+  <p class="sub">아래 단계를 따라 Stripe를 설정하면<br><strong>{{ plan }}</strong> 플랜 결제가 활성화됩니다.</p>
+
+  <div class="alert">
+    현재 테스트 모드입니다 — 실제 결제가 이루어지지 않습니다
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Stripe 계정 만들기</h3>
+        <p>stripe.com에서 무료 계정을 만드세요. 한국 사업자도 가입 가능합니다.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>API 키 복사</h3>
+        <p>Stripe 대시보드 → Developers → API keys에서 Secret key를 복사하세요.</p>
+        <div class="code">sk_test_... (테스트) 또는 sk_live_... (실제)</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>구독 상품 & 가격 생성</h3>
+        <p>Stripe 대시보드 → Products → Add product에서 스타터(₩19,900)와 프로(₩49,900) 구독 상품을 만드세요. 각 상품의 Price ID(price_...)를 복사합니다.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>환경변수 설정 후 서버 재시작</h3>
+        <p>web/ 폴더에 .env 파일을 만들어 아래와 같이 입력하세요:</p>
+        <div class="code">SECRET_KEY=랜덤-비밀키-입력
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_STARTER_PRICE_ID=price_...
+STRIPE_PRO_PRICE_ID=price_...</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h3>웹훅 등록 (선택, 프로덕션 필수)</h3>
+        <p>Stripe 대시보드 → Webhooks → Add endpoint에서 아래 URL을 등록하세요:</p>
+        <div class="code">https://yourdomain.com/stripe-webhook</div>
+        <p style="margin-top:6px">이벤트: checkout.session.completed, customer.subscription.deleted, invoice.payment_failed</p>
+      </div>
+    </div>
+  </div>
+
+  <a href="/pricing" class="btn btn-gold">← 요금제 페이지로 돌아가기</a>
+  <a href="/dashboard" class="btn btn-ghost">대시보드로 이동</a>
+</div>
+</body>
+</html>

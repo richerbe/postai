@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>결제 완료 — PostAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f0f1a;color:#e8e8e8;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.logo{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#f39c12,#e056fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;
+  display:block;text-align:center;margin-bottom:40px}
+
+.card{background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:24px;
+  padding:48px 40px;width:100%;max-width:480px;text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,.4)}
+
+.success-icon{width:80px;height:80px;background:linear-gradient(135deg,#00b894,#00cec9);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;font-size:2rem}
+.confetti{font-size:3rem;margin-bottom:16px;display:block;animation:bounce .6s ease infinite alternate}
+@keyframes bounce{from{transform:scale(1)}to{transform:scale(1.15)}}
+
+h1{font-size:1.7rem;font-weight:900;margin-bottom:10px}
+.sub{font-size:.9rem;color:#888;margin-bottom:32px;line-height:1.6}
+
+.detail-box{background:rgba(0,184,148,.08);border:1px solid rgba(0,184,148,.2);
+  border-radius:14px;padding:20px;margin-bottom:32px;text-align:left}
+.detail-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.85rem}
+.detail-row:not(:last-child){border-bottom:1px solid rgba(255,255,255,.06)}
+.detail-label{color:#888}
+.detail-value{font-weight:700;color:#fff}
+.detail-value.gold{color:#f39c12}
+
+.btn-row{display:flex;flex-direction:column;gap:12px}
+.btn{padding:14px;border-radius:10px;font-family:inherit;font-size:.95rem;
+  font-weight:700;cursor:pointer;border:none;text-decoration:none;
+  transition:.2s;display:block;text-align:center}
+.btn-primary{background:linear-gradient(135deg,#f39c12,#e67e22);color:#000}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(243,156,18,.35)}
+.btn-app{background:linear-gradient(135deg,#00b894,#0984e3);color:#fff}
+.btn-app:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,184,148,.3)}
+.btn-ghost{background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1)}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+
+.note{font-size:.78rem;color:#555;margin-top:20px;line-height:1.6}
+</style>
+</head>
+<body>
+<a href="/" class="logo">✨ PostAI</a>
+
+<div class="card">
+  <span class="confetti">🎉</span>
+  <div class="success-icon">✓</div>
+  <h1>구독이 완료되었습니다!</h1>
+  <p class="sub">결제가 정상적으로 처리되었습니다.<br>지금 바로 모든 기능을 사용하실 수 있습니다.</p>
+
+  <div class="detail-box">
+    <div class="detail-row">
+      <span class="detail-label">이름</span>
+      <span class="detail-value">{{ user['name'] }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">이메일</span>
+      <span class="detail-value">{{ user['email'] }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">현재 플랜</span>
+      <span class="detail-value gold">
+        {% if user['plan'] == 'starter' %}⭐ 스타터 플랜
+        {% elif user['plan'] == 'pro' %}👑 프로 플랜
+        {% else %}무료 플랜{% endif %}
+      </span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">상태</span>
+      <span class="detail-value" style="color:#00b894">● 활성</span>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <a href="http://localhost:8501" target="_blank" class="btn btn-app">🚀 PostAI 앱 열기</a>
+    <a href="/dashboard" class="btn btn-primary">대시보드로 이동 →</a>
+    <a href="/" class="btn btn-ghost">홈으로</a>
+  </div>
+
+  <p class="note">
+    결제 영수증은 입력하신 이메일로 발송됩니다.<br>
+    문의사항이 있으시면 support@postai.kr로 연락 주세요.
+  </p>
+</div>
+</body>
+</html>

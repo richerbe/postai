@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>오류 발생 — PostAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f0f1a;color:#e8e8e8;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.logo{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#f39c12,#e056fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none;
+  display:block;text-align:center;margin-bottom:40px}
+.card{background:#1a1a2e;border:1px solid rgba(214,63,49,.2);border-radius:20px;
+  padding:48px 40px;width:100%;max-width:480px;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.icon{font-size:3.5rem;margin-bottom:20px;display:block}
+h1{font-size:1.5rem;font-weight:900;margin-bottom:10px}
+.sub{font-size:.88rem;color:#888;margin-bottom:28px;line-height:1.6}
+.error-box{background:rgba(214,63,49,.08);border:1px solid rgba(214,63,49,.2);
+  border-radius:10px;padding:14px 18px;font-size:.82rem;color:#ff7675;
+  text-align:left;margin-bottom:28px;word-break:break-word;font-family:monospace}
+.btn{display:block;padding:13px;border-radius:10px;font-family:inherit;font-size:.9rem;
+  font-weight:700;text-decoration:none;text-align:center;margin-bottom:10px;transition:.2s;border:none;cursor:pointer}
+.btn-gold{background:linear-gradient(135deg,#f39c12,#e67e22);color:#000}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(243,156,18,.3)}
+.btn-ghost{background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1)}
+.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+.help{font-size:.78rem;color:#555;margin-top:16px}
+.help a{color:#888;text-decoration:none}
+.help a:hover{color:#f39c12}
+</style>
+</head>
+<body>
+<a href="/" class="logo">✨ PostAI</a>
+
+<div class="card">
+  <span class="icon">⚠️</span>
+  <h1>오류가 발생했습니다</h1>
+  <p class="sub">결제 처리 중 문제가 발생했습니다.<br>아래 오류 메시지를 확인해 주세요.</p>
+
+  {% if message %}
+  <div class="error-box">{{ message }}</div>
+  {% endif %}
+
+  <a href="/pricing" class="btn btn-gold">다시 시도하기</a>
+  <a href="/dashboard" class="btn btn-ghost">대시보드로 이동</a>
+
+  <p class="help">
+    문제가 계속되면 <a href="mailto:support@postai.kr">support@postai.kr</a>로 문의 주세요.
+  </p>
+</div>
+</body>
+</html>

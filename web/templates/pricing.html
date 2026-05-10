@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>요금제 — PostAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#f39c12;--navy:#0f0f1a;--navy2:#1a1a2e;--border:#ffffff12;--green:#00b894;--purple:#6c5ce7}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--navy);color:#e8e8e8;min-height:100vh}
+nav{height:64px;background:rgba(26,26,46,.95);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 32px;
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(12px)}
+.logo{font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(--gold),#e056fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-link{font-size:.85rem;color:#aaa;text-decoration:none;padding:6px 12px;border-radius:6px;transition:.2s}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+.btn-nav{background:linear-gradient(135deg,var(--gold),#e67e22);color:#000;
+  padding:8px 20px;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none;transition:.2s}
+.btn-nav:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(243,156,18,.3)}
+
+main{max-width:1100px;margin:0 auto;padding:60px 24px}
+.hero{text-align:center;margin-bottom:60px}
+.hero-badge{display:inline-block;background:rgba(243,156,18,.15);border:1px solid rgba(243,156,18,.3);
+  border-radius:20px;padding:6px 18px;font-size:.8rem;font-weight:700;color:var(--gold);margin-bottom:20px}
+.hero h1{font-size:2.4rem;font-weight:900;line-height:1.2;margin-bottom:16px}
+.hero p{font-size:1rem;color:#888;max-width:500px;margin:0 auto}
+
+.toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:48px}
+.toggle-label{font-size:.9rem;color:#aaa}
+.toggle-label.active{color:#fff;font-weight:700}
+.toggle-switch{width:52px;height:28px;background:rgba(255,255,255,.1);border-radius:14px;
+  cursor:pointer;position:relative;border:1px solid var(--border);transition:.2s}
+.toggle-switch .dot{width:22px;height:22px;background:var(--gold);border-radius:50%;
+  position:absolute;top:2px;left:2px;transition:.25s}
+.toggle-switch.annual .dot{left:26px}
+.toggle-switch.annual{background:rgba(243,156,18,.2);border-color:rgba(243,156,18,.4)}
+.save-badge{background:rgba(0,184,148,.15);border:1px solid rgba(0,184,148,.3);
+  color:var(--green);border-radius:12px;padding:3px 10px;font-size:.75rem;font-weight:700}
+
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:60px}
+.plan-card{background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:20px;padding:32px 28px;position:relative;transition:.3s}
+.plan-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.plan-card.popular{border-color:rgba(243,156,18,.4);background:rgba(243,156,18,.05)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--gold),#e67e22);color:#000;
+  padding:4px 18px;border-radius:20px;font-size:.78rem;font-weight:900;white-space:nowrap}
+.plan-name{font-size:.82rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.plan-price{font-size:2.8rem;font-weight:900;color:#fff;margin-bottom:4px}
+.plan-price span{font-size:1rem;font-weight:400;color:#888}
+.plan-price-note{font-size:.8rem;color:#666;margin-bottom:24px}
+.plan-desc{font-size:.85rem;color:#999;margin-bottom:24px;line-height:1.6}
+.btn-plan{width:100%;padding:14px;border-radius:10px;font-family:inherit;
+  font-size:.95rem;font-weight:700;cursor:pointer;border:none;transition:.2s;text-align:center;display:block}
+.btn-free{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--border);text-decoration:none}
+.btn-free:hover{background:rgba(255,255,255,.14)}
+.btn-starter{background:linear-gradient(135deg,var(--gold),#e67e22);color:#000}
+.btn-starter:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(243,156,18,.35)}
+.btn-pro{background:linear-gradient(135deg,var(--purple),#a29bfe);color:#fff}
+.btn-pro:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,92,231,.35)}
+.features-list{list-style:none;margin-top:24px}
+.features-list li{display:flex;align-items:flex-start;gap:10px;
+  font-size:.83rem;color:#ccc;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.features-list li:last-child{border-bottom:none}
+.features-list li.disabled{color:#555}
+.check{color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px}
+.cross{color:#444;flex-shrink:0;margin-top:1px}
+
+.compare{margin-bottom:60px}
+.compare h2{font-size:1.4rem;font-weight:900;text-align:center;margin-bottom:32px}
+.compare-table{width:100%;border-collapse:collapse}
+.compare-table th{padding:14px 16px;font-size:.8rem;color:#888;border-bottom:1px solid var(--border);text-align:center}
+.compare-table th:first-child{text-align:left}
+.compare-table td{padding:12px 16px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center}
+.compare-table td:first-child{text-align:left;color:#ccc}
+.compare-table tr:hover td{background:rgba(255,255,255,.02)}
+.col-popular{background:rgba(243,156,18,.05)}
+.check-cell{color:var(--green);font-size:1rem}
+.cross-cell{color:#444;font-size:1rem}
+.plan-col{font-weight:700}
+
+.faq{max-width:700px;margin:0 auto 60px}
+.faq h2{font-size:1.4rem;font-weight:900;text-align:center;margin-bottom:32px}
+.faq-item{border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.faq-q{width:100%;background:none;border:none;color:#e8e8e8;font-family:inherit;
+  font-size:.9rem;font-weight:600;padding:18px 20px;text-align:left;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;transition:.2s}
+.faq-q:hover{background:rgba(255,255,255,.03)}
+.faq-q .arrow{color:#888;transition:.3s;font-size:1.1rem}
+.faq-a{max-height:0;overflow:hidden;transition:.3s}
+.faq-a.open{max-height:200px}
+.faq-a p{padding:0 20px 18px;font-size:.85rem;color:#999;line-height:1.7}
+
+.cta-band{background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(243,156,18,.15));
+  border:1px solid rgba(108,92,231,.25);border-radius:20px;padding:48px;text-align:center}
+.cta-band h2{font-size:1.6rem;font-weight:900;margin-bottom:12px}
+.cta-band p{font-size:.9rem;color:#aaa;margin-bottom:28px}
+.btn-cta{display:inline-block;background:linear-gradient(135deg,var(--gold),#e67e22);
+  color:#000;padding:14px 40px;border-radius:10px;font-weight:900;font-size:1rem;
+  text-decoration:none;transition:.2s}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(243,156,18,.35)}
+
+@media(max-width:800px){
+  .plans{grid-template-columns:1fr}
+  .hero h1{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">✨ PostAI</a>
+  <div class="nav-right">
+    {% if user %}
+    <a href="/dashboard" class="nav-link">대시보드</a>
+    <a href="/logout" class="nav-link">로그아웃</a>
+    {% else %}
+    <a href="/login" class="nav-link">로그인</a>
+    <a href="/register" class="btn-nav">무료 시작</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-badge">💰 간단하고 투명한 요금제</div>
+    <h1>당신의 성장에 맞는<br>플랜을 선택하세요</h1>
+    <p>7일 무료 체험 · 언제든 해지 가능 · 숨겨진 요금 없음</p>
+  </div>
+
+  <div class="toggle-wrap">
+    <span class="toggle-label active" id="lbl-monthly">월간 결제</span>
+    <div class="toggle-switch" id="billing-toggle" onclick="toggleBilling()">
+      <div class="dot"></div>
+    </div>
+    <span class="toggle-label" id="lbl-annual">연간 결제</span>
+    <span class="save-badge" id="save-badge" style="display:none">2개월 무료</span>
+  </div>
+
+  <div class="plans">
+    <!-- 무료 -->
+    <div class="plan-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">₩0 <span>/ 월</span></div>
+      <div class="plan-price-note">신용카드 불필요</div>
+      <div class="plan-desc">SNS 자동화가 처음이신 분을 위한 무료 플랜</div>
+      <a href="/register" class="btn-plan btn-free">무료로 시작하기</a>
+      <ul class="features-list">
+        <li><span class="check">✓</span> 월 10개 포스트 생성</li>
+        <li><span class="check">✓</span> AI 글쓰기 (월 20회)</li>
+        <li><span class="check">✓</span> 1개 플랫폼 연결</li>
+        <li><span class="check">✓</span> 기본 성과 추적</li>
+        <li class="disabled"><span class="cross">✗</span> 사진 → 콘텐츠 자동 생성</li>
+        <li class="disabled"><span class="cross">✗</span> 예약 발행</li>
+        <li class="disabled"><span class="cross">✗</span> PDF 리포트</li>
+        <li class="disabled"><span class="cross">✗</span> 유튜브 트렌드 분석</li>
+      </ul>
+    </div>
+
+    <!-- 스타터 -->
+    <div class="plan-card popular">
+      <div class="popular-badge">🔥 가장 인기</div>
+      <div class="plan-name">Starter</div>
+      <div class="plan-price" id="starter-price">₩19,900 <span>/ 월</span></div>
+      <div class="plan-price-note" id="starter-note">월간 결제 · 언제든 해지</div>
+      <div class="plan-desc">본격적으로 SNS를 운영하는 소상공인/크리에이터</div>
+      {% if user and user['plan'] == 'starter' %}
+      <a href="/dashboard" class="btn-plan btn-starter">현재 플랜 ✓</a>
+      {% else %}
+      <form action="/checkout/starter" method="post" style="margin:0">
+        <button type="submit" class="btn-plan btn-starter">스타터 시작하기 →</button>
+      </form>
+      {% endif %}
+      <ul class="features-list">
+        <li><span class="check">✓</span> 월 200개 포스트 생성</li>
+        <li><span class="check">✓</span> AI 글쓰기 (월 500회)</li>
+        <li><span class="check">✓</span> 5개 플랫폼 동시 연결</li>
+        <li><span class="check">✓</span> 사진 → 콘텐츠 자동 생성</li>
+        <li><span class="check">✓</span> 스마트 예약 발행</li>
+        <li><span class="check">✓</span> 성과 분석 + 리포트</li>
+        <li><span class="check">✓</span> 유튜브 트렌드 분석</li>
+        <li class="disabled"><span class="cross">✗</span> PDF 자동화 리포트</li>
+      </ul>
+    </div>
+
+    <!-- 프로 -->
+    <div class="plan-card">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price" id="pro-price">₩49,900 <span>/ 월</span></div>
+      <div class="plan-price-note" id="pro-note">월간 결제 · 언제든 해지</div>
+      <div class="plan-desc">대용량 운영, 에이전시, 전문 마케터를 위한 플랜</div>
+      {% if user and user['plan'] == 'pro' %}
+      <a href="/dashboard" class="btn-plan btn-pro">현재 플랜 ✓</a>
+      {% else %}
+      <form action="/checkout/pro" method="post" style="margin:0">
+        <button type="submit" class="btn-plan btn-pro">프로 시작하기 →</button>
+      </form>
+      {% endif %}
+      <ul class="features-list">
+        <li><span class="check">✓</span> 무제한 포스트 생성</li>
+        <li><span class="check">✓</span> 무제한 AI 글쓰기</li>
+        <li><span class="check">✓</span> 모든 플랫폼 연결</li>
+        <li><span class="check">✓</span> 사진 → 콘텐츠 자동 생성</li>
+        <li><span class="check">✓</span> 스마트 예약 발행</li>
+        <li><span class="check">✓</span> PDF 자동화 리포트</li>
+        <li><span class="check">✓</span> 유튜브 트렌드 분석</li>
+        <li><span class="check">✓</span> 우선 고객 지원 (24h)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 비교표 -->
+  <div class="compare">
+    <h2>플랜 상세 비교</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="text-align:left">기능</th>
+          <th>무료</th>
+          <th class="col-popular plan-col" style="color:var(--gold)">스타터</th>
+          <th>프로</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- AI 콘텐츠 제작 -->
+        <tr style="background:rgba(255,255,255,.02);font-weight:700;font-size:.82rem"><td colspan="4">🤖 AI 콘텐츠 제작</td></tr>
+        <tr><td>AI 콘텐츠 기획</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>AI 콘텐츠 초안 생성</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>AI 카드뉴스 제작</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>AI 블로그 글 생성</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>AI 숏폼 영상 생성</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>링크 → 콘텐츠 변환</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>워터마크 제거</td><td class="cross-cell">✗</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>커스텀 폰트 업로드</td><td class="cross-cell">✗</td><td class="col-popular cross-cell">✗</td><td class="check-cell">✓</td></tr>
+
+        <!-- SNS 관리 -->
+        <tr style="background:rgba(255,255,255,.02);font-weight:700;font-size:.82rem"><td colspan="4">📱 SNS 관리</td></tr>
+        <tr><td>SNS 계정 연동</td><td>1개</td><td class="col-popular">5개</td><td>무제한</td></tr>
+        <tr><td>발행 캘린더</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>콘텐츠 발행</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>콘텐츠 예약</td><td class="cross-cell">✗</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>무감추 완전 자동 발행</td><td class="cross-cell">✗</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>성과 지표 대시보드</td><td>기본</td><td class="col-popular">고급</td><td>전체</td></tr>
+        <tr><td>DM 자동화</td><td class="check-cell">✓</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>DM 자동화 룰 수</td><td>999개</td><td class="col-popular">999개</td><td>무제한</td></tr>
+        <tr><td>API / MCP 서버 접근</td><td class="cross-cell">✗</td><td class="col-popular cross-cell">✗</td><td class="check-cell">✓</td></tr>
+        <tr><td>해시태그 & SEO 분석</td><td class="cross-cell">✗</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+
+        <!-- 분석 & 리포팅 -->
+        <tr style="background:rgba(255,255,255,.02);font-weight:700;font-size:.82rem"><td colspan="4">📊 분석 & 리포팅</td></tr>
+        <tr><td>AI SNS 성과 분석 및 리포트</td><td class="cross-cell">✗</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+        <tr><td>PDF 자동화 리포트</td><td class="cross-cell">✗</td><td class="col-popular cross-cell">✗</td><td class="check-cell">✓</td></tr>
+        <tr><td>유튜브 트렌드 분석</td><td class="cross-cell">✗</td><td class="col-popular check-cell">✓</td><td class="check-cell">✓</td></tr>
+
+        <!-- 팀 & 액세스 관리 -->
+        <tr style="background:rgba(255,255,255,.02);font-weight:700;font-size:.82rem"><td colspan="4">👥 팀 & 액세스</td></tr>
+        <tr><td>팀 멤버</td><td>1명</td><td class="col-popular">1명</td><td>3명</td></tr>
+        <tr><td>추가 팀 멤버 비용</td><td>없음</td><td class="col-popular">없음</td><td>+₩8/월</td></tr>
+        <tr><td>브랜드 자산 저장</td><td>10개</td><td class="col-popular">20개</td><td>무제한</td></tr>
+        <tr><td>저장된 템플릿</td><td>5개</td><td class="col-popular">10개</td><td>40개</td></tr>
+
+        <!-- 지원 -->
+        <tr style="background:rgba(255,255,255,.02);font-weight:700;font-size:.82rem"><td colspan="4">💬 지원</td></tr>
+        <tr><td>고객 지원</td><td>이메일</td><td class="col-popular">이메일</td><td>우선 24h</td></tr>
+        <tr><td>사용량 초과 요금</td><td>초과 불가</td><td class="col-popular">₩0.10/크레딧</td><td>₩0.03/크레딧</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq">
+    <h2>자주 묻는 질문</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        무료로 얼마나 사용할 수 있나요? <span class="arrow">﹀</span>
+      </button>
+      <div class="faq-a">
+        <p>무료 플랜은 월 10개 포스트 생성, AI 글쓰기 20회, 1개 플랫폼 연결이 가능합니다. 기간 제한 없이 영구적으로 무료로 사용하실 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        언제든지 해지할 수 있나요? <span class="arrow">﹀</span>
+      </button>
+      <div class="faq-a">
+        <p>네, 언제든지 해지하실 수 있습니다. 해지 시 현재 결제 주기가 끝날 때까지 모든 기능을 계속 사용하실 수 있으며, 이후 자동으로 무료 플랜으로 전환됩니다.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        사용량이 초과되면 어떻게 되나요? <span class="arrow">﹀</span>
+      </button>
+      <div class="faq-a">
+        <p>월 한도를 초과하면 해당 기능 사용이 제한됩니다. 상위 플랜으로 업그레이드하거나 다음 달까지 기다리시면 됩니다. 초과 요금은 절대 부과되지 않습니다.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        결제는 어떻게 이루어지나요? <span class="arrow">﹀</span>
+      </button>
+      <div class="faq-a">
+        <p>Stripe를 통한 안전한 카드 결제를 지원합니다. 신용카드, 체크카드 모두 사용 가능하며, 결제 정보는 PostAI 서버에 저장되지 않습니다.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        연간 결제 시 혜택은 무엇인가요? <span class="arrow">﹀</span>
+      </button>
+      <div class="faq-a">
+        <p>연간 결제 시 2개월 요금을 할인받을 수 있습니다. 스타터 기준 월 약 ₩16,583, 프로 기준 월 약 ₩41,583으로 이용 가능합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-band">
+    <h2>지금 바로 시작해보세요 🚀</h2>
+    <p>신용카드 없이 무료로 시작 · 설치 불필요 · 5분 안에 첫 포스트 완성</p>
+    <a href="/register" class="btn-cta">무료로 시작하기 →</a>
+  </div>
+</main>
+
+<script>
+let isAnnual = false;
+
+function toggleBilling() {
+  isAnnual = !isAnnual;
+  const toggle = document.getElementById('billing-toggle');
+  const lblM = document.getElementById('lbl-monthly');
+  const lblA = document.getElementById('lbl-annual');
+  const badge = document.getElementById('save-badge');
+  const sp = document.getElementById('starter-price');
+  const sn = document.getElementById('starter-note');
+  const pp = document.getElementById('pro-price');
+  const pn = document.getElementById('pro-note');
+
+  if (isAnnual) {
+    toggle.classList.add('annual');
+    lblM.classList.remove('active');
+    lblA.classList.add('active');
+    badge.style.display = 'inline';
+    sp.innerHTML = '₩16,583 <span>/ 월</span>';
+    sn.textContent = '연간 결제 ₩199,000 (2개월 무료)';
+    pp.innerHTML = '₩41,583 <span>/ 월</span>';
+    pn.textContent = '연간 결제 ₩499,000 (2개월 무료)';
+  } else {
+    toggle.classList.remove('annual');
+    lblM.classList.add('active');
+    lblA.classList.remove('active');
+    badge.style.display = 'none';
+    sp.innerHTML = '₩19,900 <span>/ 월</span>';
+    sn.textContent = '월간 결제 · 언제든 해지';
+    pp.innerHTML = '₩49,900 <span>/ 월</span>';
+    pn.textContent = '월간 결제 · 언제든 해지';
+  }
+}
+
+function toggleFaq(btn) {
+  const ans = btn.nextElementSibling;
+  const arrow = btn.querySelector('.arrow');
+  const isOpen = ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-q .arrow').forEach(a => a.style.transform = '');
+  if (!isOpen) {
+    ans.classList.add('open');
+    arrow.style.transform = 'rotate(180deg)';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>{{ '회원가입' if mode=='register' else '로그인' }} — PostAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f0f1a;color:#e8e8e8;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.logo{font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#f39c12,#e056fd);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;text-decoration:none;display:block;text-align:center}
+.subtitle{font-size:.88rem;color:#888;text-align:center;margin-bottom:36px}
+.card{background:#1a1a2e;border:1px solid rgba(255,255,255,.1);border-radius:20px;
+  padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+h1{font-size:1.5rem;font-weight:900;margin-bottom:8px;text-align:center}
+.card-sub{font-size:.85rem;color:#888;text-align:center;margin-bottom:28px}
+.form-group{margin-bottom:18px}
+label{display:block;font-size:.82rem;font-weight:600;color:#ccc;margin-bottom:6px}
+input{width:100%;padding:13px 16px;background:rgba(255,255,255,.06);
+  border:1.5px solid rgba(255,255,255,.1);border-radius:10px;
+  color:#fff;font-family:inherit;font-size:.92rem;transition:.2s}
+input:focus{outline:none;border-color:#f39c12;background:rgba(243,156,18,.06)}
+input::placeholder{color:#555}
+.btn{width:100%;padding:14px;border-radius:10px;font-family:inherit;
+  font-size:1rem;font-weight:700;cursor:pointer;border:none;margin-top:8px;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,#f39c12,#e67e22);color:#000}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(243,156,18,.35)}
+.error{background:rgba(214,63,49,.12);border:1px solid rgba(214,63,49,.3);
+  border-radius:8px;padding:12px 16px;font-size:.85rem;color:#ff7675;margin-bottom:18px}
+.divider{display:flex;align-items:center;gap:12px;margin:22px 0;color:#555;font-size:.82rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.switch{text-align:center;font-size:.85rem;color:#888;margin-top:20px}
+.switch a{color:#f39c12;text-decoration:none;font-weight:600}
+.switch a:hover{text-decoration:underline}
+.terms{font-size:.75rem;color:#666;text-align:center;margin-top:14px;line-height:1.6}
+.terms a{color:#888}
+.back{display:block;text-align:center;font-size:.82rem;color:#666;
+  text-decoration:none;margin-top:20px;transition:.2s}
+.back:hover{color:#f39c12}
+.pw-hint{font-size:.75rem;color:#666;margin-top:5px}
+</style>
+</head>
+<body>
+<a href="/" class="logo">✨ PostAI</a>
+<p class="subtitle">AI SNS 마케팅 자동화 플랫폼</p>
+
+<div class="card">
+  <h1>{{ '시작하기 👋' if mode=='register' else '다시 만나요 👋' }}</h1>
+  <p class="card-sub">
+    {% if mode=='register' %}무료로 가입하고 AI 마케팅을 경험하세요
+    {% else %}계정에 로그인하세요{% endif %}
+  </p>
+
+  {% if error %}
+  <div class="error">⚠️ {{ error }}</div>
+  {% endif %}
+
+  <form method="POST">
+    {% if mode=='register' %}
+    <div class="form-group">
+      <label>이름 또는 브랜드명</label>
+      <input type="text" name="name" placeholder="홍길동 / 금석주얼리" required autofocus>
+    </div>
+    {% endif %}
+    <div class="form-group">
+      <label>이메일</label>
+      <input type="email" name="email" placeholder="example@email.com" required {% if mode=='login' %}autofocus{% endif %}>
+    </div>
+    <div class="form-group">
+      <label>비밀번호</label>
+      <input type="password" name="password" placeholder="••••••••" required>
+      {% if mode=='register' %}<div class="pw-hint">8자 이상 입력하세요</div>{% endif %}
+    </div>
+
+    {% if mode=='register' %}
+    <div class="terms">
+      가입하면 <a href="#">이용약관</a> 및 <a href="#">개인정보처리방침</a>에 동의하는 것으로 간주됩니다.
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top:16px">
+      🚀 무료 계정 만들기
+    </button>
+    {% else %}
+    <button type="submit" class="btn btn-primary">
+      로그인 →
+    </button>
+    {% endif %}
+  </form>
+
+  <div class="switch">
+    {% if mode=='register' %}
+    이미 계정이 있으신가요? <a href="/login">로그인</a>
+    {% else %}
+    계정이 없으신가요? <a href="/register">무료로 시작하기</a>
+    {% endif %}
+  </div>
+</div>
+<a href="/" class="back">← 홈으로 돌아가기</a>
+</body>
+</html>
