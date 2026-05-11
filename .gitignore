@@ -1,7 +1,12 @@
-# 환경
+# 환경 설정
+config.yaml
 .env
 .env.local
-.env.*.local
+
+# 크레덴셜
+youtube_token.pickle
+youtube_client_secrets.json
+naver_cookies.json
 
 # Python
 __pycache__/
@@ -9,9 +14,8 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
 venv/
-ENV/
+env/
 build/
 develop-eggs/
 dist/
@@ -24,23 +28,9 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-
-# 데이터베이스
-*.db
-*.sqlite
-*.sqlite3
-users.db
-
-# 데이터 파일
-/posts/
-/schedule.json
-/youtube_client_secrets.json
-/naver_cookies.json
 
 # IDE
 .vscode/
@@ -48,35 +38,12 @@ users.db
 *.swp
 *.swo
 *~
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Streamlit
-.streamlit/cache/
-.streamlit/secrets.toml
-streamlit.log
-
-# Flask
-instance/
-.webassets-cache
-
-# 로그 파일
-*.log
-logs/
-
-# 임시 파일
-tmp/
-temp/
-*.tmp
-
-# Docker
-docker-compose.override.yml
-
-# 배포
-dist/
-build/
-*.pyc
-
-# 민감한 정보
-secrets.json
-credentials.json
-.aws/
+# 앱 생성 파일
+assets/images/
+assets/videos/
+posts/*.yaml
