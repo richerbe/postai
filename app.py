@@ -252,17 +252,18 @@ def page_writing():
                 time.sleep(2)
 
             st.success(f"✅ 완료! '{topic}'에 대한 {length}자 글이 생성되었습니다.")
-            st.markdown("""
+            channels_str = ', '.join(channels)
+            st.markdown(f"""
             ### 📝 생성된 글
 
             **{topic}**
 
             오늘은 {topic}에 대해 이야기해볼게요. 이것은 정말 흥미로운 주제입니다.
 
-            {tone} 톤으로 작성된 이 글은 여러분의 {', '.join(channels)} 채널에 완벽합니다.
+            {tone} 톤으로 작성된 이 글은 여러분의 {channels_str} 채널에 완벽합니다.
 
             #트렌드 #최신정보 #공유
-            """.format(topic=topic, tone=tone, channels=channels))
+            """)
 
             col1, col2, col3 = st.columns(3)
             with col1:
