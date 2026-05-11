@@ -1,51 +1,73 @@
-general:
-  default_hashtags:
-  - '#자동화'
-  - '#콘텐츠마케팅'
-  - '#SNS마케팅'
-  image_max_size_mb: 8
-  video_max_size_mb: 500
-image_generation:
+# ============================================================
+# 🚀 소셜미디어 자동 업로드 설정 파일
+# 각 플랫폼의 API 키와 계정 정보를 입력하세요
+# ⚠️ 주의: 이 파일에 민감한 정보를 저장하지 마세요
+#         .gitignore에 config.yaml을 추가하세요
+# ============================================================
+
+# ── OpenAI (ChatGPT + DALL-E) ────────────────────────────
+openai:
   enabled: true
-  hf_token: ''
-  image_model: stabilityai/stable-diffusion-xl-base-1.0
+  api_key: ""  # https://platform.openai.com/account/api-keys
+
+  # ChatGPT 설정
+  model: "gpt-4o"                # gpt-4o / gpt-3.5-turbo (저렴)
+  temperature: 0.7               # 창의성 (0.0~1.0)
+
+  # DALL-E 이미지 생성 설정
+  image_model: "dall-e-3"        # dall-e-3 (고품질) / dall-e-2
+  image_quality: "standard"      # standard (빠름) / hd (고품질, 비쌈)
+  image_size: "1024x1024"        # 1024x1024 / 1792x1024 / 1024x1792
+
+# ── Instagram & Threads (Selenium 자동화) ────────────────
 instagram:
   enabled: true
-  password: '!asdf5091j5'
-  username: geumseok_jewellery
-naver_blog:
-  blog_id: review_jinsim
-  enabled: true
-  naver_id: end13802
-  naver_password: 8IWLK3hPKwRmSV
-openai:
-  api_key: AIzaSyBbjZ_nLCiaaskjnK035YQD0-whLq6lY2E
-  enabled: true
-  model: gemini-2.5-flash
-  temperature: 0.7
-scheduler:
-  enabled: true
-  timezone: Asia/Seoul
+  username: ""  # 인스타그램 아이디
+  password: ""  # 인스타그램 비밀번호
+  # ⚠️ 2단계 인증 사용 시 앱 비밀번호 사용
+
 threads:
   enabled: true
-  password: '!asdf5091j5'
-  username: geumseok_jewellery
-users:
-  admin:
-    created_at: '2026-05-10T23:03:13.694368'
-    enabled: true
-    password: 240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9
-    role: 관리자
-wordpress:
-  default_category_id: 1
-  default_status: publish
-  enabled: true
-  password: YOUR_WP_APP_PASSWORD
-  url: https://your-wordpress-site.com
-  username: YOUR_WP_USERNAME
+  username: ""  # 스레드 아이디 (보통 인스타와 동일)
+  password: ""  # 스레드 비밀번호
+
+# ── YouTube (YouTube Data API v3) ─────────────────────────
 youtube:
-  client_secrets_file: youtube_client_secrets.json
-  default_category: '22'
-  default_language: ko
-  default_privacy: public
   enabled: true
+  client_secrets_file: "youtube_client_secrets.json"
+  # 발급: https://console.cloud.google.com/ → YouTube Data API v3
+  default_category: "22"         # 22 = People & Blogs
+  default_privacy: "public"      # public / private / unlisted
+  default_language: "ko"
+
+# ── 네이버 블로그 ─────────────────────────────────────────
+naver_blog:
+  enabled: true
+  naver_id: ""        # 네이버 아이디
+  naver_password: ""  # 네이버 비밀번호
+  blog_id: ""         # 블로그 아이디 (주소의 아이디 부분)
+  # ⚠️ 2단계 인증 사용 시 먼저 수동 로그인 필요
+
+# ── WordPress ─────────────────────────────────────────────
+wordpress:
+  enabled: true
+  url: ""             # https://your-wordpress-site.com
+  username: ""        # WordPress 사용자명
+  password: ""        # 애플리케이션 비밀번호
+  # 발급: WordPress 관리자 > 사용자 > 프로필 > 애플리케이션 비밀번호
+  default_status: "publish"      # publish / draft / private
+  default_category_id: 1
+
+# ── 스케줄러 설정 ──────────────────────────────────────────
+scheduler:
+  enabled: true
+  timezone: "Asia/Seoul"
+
+# ── 공통 설정 ─────────────────────────────────────────────
+general:
+  default_hashtags:
+    - "#자동화"
+    - "#콘텐츠마케팅"
+    - "#SNS마케팅"
+  image_max_size_mb: 8
+  video_max_size_mb: 500

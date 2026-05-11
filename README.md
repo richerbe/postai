@@ -1,190 +1,295 @@
-# 🚀 SNS 자동 업로드 시스템
+# 🚀 소셜미디어 멀티플랫폼 자동 업로드 시스템
 
-다중 SNS 플랫폼을 한 번에 관리하고 콘텐츠를 자동으로 발행할 수 있는 통합 플랫폼입니다.
-
-## ✨ 주요 기능 (28개 메뉴)
-
-### 콘텐츠 제작
-- 🔥 트렌드 기획 - AI 기반 트렌드 분석
-- ✏️ 콘텐츠 기획실 - 전략 수립
-- 🎯 AI 콘텐츠 기획 - 자동 아이디어 생성
-- ✍️ 포스트 생성 - 텍스트 작성
-- 🖼️ 이미지 생성 - AI 이미지
-- 📹 숏폼 영상 - 15/30/60초 영상
-- 🎴 카드뉴스 제작 - 멀티 페이지
-- 📝 블로그 글 쓰기 - 자동 생성
-
-### SNS 관리
-- 🔗 계정 연동 - Instagram, YouTube, TikTok 등
-- 📤 업로드 - 플랫폼별 발행
-- ⏰ 예약 발행 - 시간대별 자동
-- 📅 발행 캘린더 - 월간 계획
-- 💬 DM 자동화 - 자동 응답
-
-### 분석 & 리포팅
-- 📊 성과 추적 - 실시간 모니터링
-- 📄 리포트 생성 - PDF 리포트
-
-### 팀 & 설정
-- 👥 팀 멤버 관리 - 권한 관리
-- 👥 사용자 관리 - 관리자 전용
-- 🔌 API/MCP 연동 - 외부 서비스
-- ⚙️ 설정 - 플랫폼 API 키
-
-## 👥 다중 사용자 시스템
-
-- **로그인**: 안전한 사용자 인증
-- **권한 제어**:
-  - 👁️ 뷰어: 보기만
-  - ✏️ 편집자: 생성/편집/삭제
-  - ⚙️ 관리자: 모든 기능 + 사용자 관리
-
-## 🛠️ 기술 스택
-
-- Backend: Flask, Streamlit (Python)
-- Database: SQLite
-- Payment: Stripe
-- Deployment: Docker
+**Instagram · Threads · YouTube · 네이버 블로그 · WordPress**에 콘텐츠를 자동 업로드합니다.  
+**ChatGPT + DALL-E**로 텍스트와 이미지를 AI 자동 생성까지 가능합니다!
 
 ---
 
-## 📦 설치
+## ✨ 핵심 기능
 
-### 로컬 개발
+| 기능 | 설명 |
+|------|------|
+| 🤖 **AI 포스트 생성** | ChatGPT로 제목, 본문, 해시태그 자동 작성 |
+| 🎨 **AI 이미지 생성** | DALL-E로 카드뉴스, 썸네일 자동 제작 |
+| 📤 **멀티 플랫폼 발행** | 5개 플랫폼에 동시 발행 |
+| ⏰ **예약 발행** | 특정 시간 또는 정기 발행 |
+| 🔄 **플랫폼별 최적화** | 각 SNS에 맞춰 텍스트 자동 변환 |
+| 📹 **카드뉴스 시리즈** | 다중 페이지 카드뉴스 자동 생성 |
 
+---
+
+## 🎯 사용 시나리오
+
+### 시나리오 1️⃣: "AI 마케팅" 주제로 전체 자동화 (5분)
 ```bash
-# 1. 저장소 클론
-git clone <repo-url>
-cd 자동화
-
-# 2. 환경 변수 설정
-cp .env.example .env
-# .env 편집 후 API 키 입력
-
-# 3. 의존성 설치
-pip install -r requirements.txt
-
-# 4. 실행 (터미널 2개 열기)
-
-# 터미널 1 - Flask
-cd web && python -m flask run --port=8000
-
-# 터미널 2 - Streamlit  
-python -m streamlit run app.py --server.port=8501
+# 포스트 + 이미지 + 발행 모두 자동!
+python main.py generate-complete "AI 마케팅 트렌드" --cards 3 -p instagram -p threads -p youtube
 ```
 
-**접속**: http://localhost:8000 (웹), http://localhost:8501 (앱)
+결과:
+- ✅ ChatGPT가 Instagram, Threads, YouTube용 포스트 생성
+- ✅ DALL-E가 카드뉴스 3장 생성
+- ✅ 자동으로 플랫폼에 발행 (이미지 포함)
 
-**기본 계정**: admin / admin123
-
----
-
-## 🐳 Docker 배포
-
-### Docker Compose (권장)
-
+### 시나리오 2️⃣: 수동으로 단계별 진행
 ```bash
-chmod +x deploy.sh
-./deploy.sh
-# 또는
-docker-compose up -d
+# 1. 포스트만 생성
+python main.py generate "소셜미디어 마케팅" --save posts/social.yaml
+
+# 2. 카드뉴스 이미지 생성
+python main.py generate-cardnews "소셜미디어 마케팅" --cards 3
+
+# 3. 업로드
+python main.py upload posts/social.yaml -p instagram -p threads
 ```
 
-### 클라우드 배포
-
-#### Streamlit Cloud (무료)
-1. GitHub 푸시
-2. https://share.streamlit.io 방문
-3. "New app" → app.py 선택
-
-#### Heroku
+### 시나리오 3️⃣: 유튜브 영상 + 썸네일 자동 생성
 ```bash
-heroku create your-app
-heroku config:set SECRET_KEY=xxx STRIPE_SECRET_KEY=xxx
-git push heroku main
-```
+python main.py generate-thumbnail "ChatGPT로 마케팅 자동화하기"
+# → assets/images/thumbnail_youtube.png 생성됨
 
-#### AWS/GCP/Azure
-Docker 이미지를 Container Services에 배포
-
----
-
-## 🔐 환경변수 설정
-
-필수:
-```env
-FLASK_ENV=production
-SECRET_KEY=strong-random-string
-
-# Stripe (필수)
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_PUBLIC_KEY=pk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-STRIPE_STARTER_PRICE_ID=price_...
-STRIPE_PRO_PRICE_ID=price_...
-```
-
-선택:
-```env
-OPENAI_API_KEY=sk_...
-GOOGLE_API_KEY=...
+# posts/youtube_post.yaml에 썸네일 경로 추가 후
+python main.py upload posts/youtube_post.yaml -p youtube
 ```
 
 ---
 
-## ⚡ 프로덕션 체크리스트
+## 🚀 빠른 시작
 
-- ✅ SECRET_KEY 변경
-- ✅ 모든 API 키 설정
-- ✅ HTTPS 활성화
-- ✅ CORS 설정
-- ✅ 데이터베이스 백업
-- ✅ 로그 모니터링
-
----
-
-## 📊 모니터링
-
+### 1단계: 설치
 ```bash
-# 상태 확인
-docker-compose ps
+chmod +x setup.sh && ./setup.sh
+source venv/bin/activate
+```
 
-# 로그 확인
-docker-compose logs -f
+### 2단계: API 키 설정
 
-# 헬스 체크
-curl http://localhost:8000/
-curl http://localhost:8501/
+#### OpenAI (ChatGPT + DALL-E)
+1. https://platform.openai.com/account/api-keys 접속
+2. **Create new secret key** → 복사
+3. `config.yaml` 수정:
+```yaml
+openai:
+  enabled: true
+  api_key: "sk-proj-xxxxxxxxxxxxx"  # ← 붙여넣기
+  model: "gpt-4o"  # 또는 gpt-3.5-turbo (저렴)
+```
+
+#### 인스타그램/Threads/YouTube/WordPress
+[원래 설명서 참고](#api-설정-가이드)
+
+### 3단계: 포스트 생성 및 발행
+```bash
+# 한 줄로 완성!
+python main.py generate-complete "내 주제" --cards 3 -p instagram -p threads
 ```
 
 ---
 
-## 🆘 문제 해결
+## 📋 전체 명령어 목록
 
-**포트 충돌**
+### 📝 포스트 생성
+| 명령어 | 설명 |
+|--------|------|
+| `generate` | 단일 플랫폼용 포스트 생성 |
+| `generate-batch` | 여러 플랫폼용 포스트 한 번에 생성 |
+| `generate-complete` | 포스트 + 이미지 + 발행 모두 자동 |
+
+### 🎨 이미지 생성
+| 명령어 | 설명 |
+|--------|------|
+| `generate-image` | 일반 이미지 생성 |
+| `generate-cardnews` | 카드뉴스 시리즈 생성 |
+| `generate-thumbnail` | YouTube 썸네일 생성 |
+
+### 📤 업로드
+| 명령어 | 설명 |
+|--------|------|
+| `upload` | 즉시 업로드 |
+| `schedule` | 특정 시간에 예약 업로드 |
+| `schedule-recurring` | 매일/매주 반복 예약 |
+
+### ⚙️ 관리
+| 명령어 | 설명 |
+|--------|------|
+| `new-post` | YAML 템플릿 생성 |
+| `check-config` | API 설정 상태 확인 |
+
+---
+
+## 💡 명령어 예시
+
+### 💬 텍스트만 생성
 ```bash
-lsof -i :8000
-kill -9 <PID>
+# 인스타용 포스트 생성 (저장)
+python main.py generate "AI 자동화 기초" -p instagram --save posts/ai_intro.yaml
+
+# 여러 플랫폼용 동시 생성
+python main.py generate-batch "마케팅 팁" -p instagram -p youtube -p blog
 ```
 
-**데이터베이스 오류**
+### 🖼️ 이미지만 생성
 ```bash
-rm web/users.db
-python -c "from web.server import init_db; init_db()"
+# 일반 이미지 3장
+python main.py generate-image "한국식 미니멀 디자인" -n 3
+
+# 카드뉴스 시리즈 (4장)
+python main.py generate-cardnews "SNS 마케팅 전략" --cards 4
+
+# YouTube 썸네일
+python main.py generate-thumbnail "ChatGPT 활용법"
 ```
 
-**Streamlit 캐시**
+### 📤 업로드
 ```bash
-rm -rf ~/.streamlit/
-streamlit run app.py
+# 즉시 업로드
+python main.py upload posts/my_post.yaml -p instagram -p threads
+
+# 특정 시간에 업로드 (2024-12-25 오전 9시)
+python main.py schedule posts/my_post.yaml 2024-12-25T09:00:00 -p instagram
+
+# 매일 오전 9시에 반복 업로드
+python main.py schedule-recurring posts/daily.yaml "0 9 * * *" -p instagram -p youtube
+
+# 평일만 오전 9시 (월~금)
+python main.py schedule-recurring posts/weekday.yaml "0 9 * * 1-5" -p threads
+```
+
+### 🎯 완전 자동화 (최고 추천!)
+```bash
+# 1줄로 전부 해결: 포스트 생성 + 이미지 생성 + 발행
+python main.py generate-complete "인공지능의 미래" --cards 3 -p instagram -p threads -p youtube
+
+# 결과:
+# ✓ ChatGPT: Instagram, Threads, YouTube용 포스트 생성
+# ✓ DALL-E: 3장 카드뉴스 생성
+# ✓ 자동 발행: 모든 포스트 + 이미지 동시 업로드
 ```
 
 ---
 
-## 📄 라이선스
+## 🛠️ 설정 파일 (`config.yaml`)
 
-MIT
+```yaml
+openai:
+  enabled: true
+  api_key: "sk-proj-xxxxx"
+  model: "gpt-4o"              # gpt-4o / gpt-3.5-turbo
+  temperature: 0.7              # 창의성 (0.0~1.0)
+  image_quality: "standard"     # standard / hd
+  image_size: "1024x1024"       # 이미지 크기
+
+instagram:
+  enabled: true
+  username: "YOUR_USERNAME"
+  password: "YOUR_PASSWORD"
+  # API 방식 또는 ID/PW 자동화 중 선택
+
+threads:
+  enabled: true
+  username: "YOUR_USERNAME"
+  password: "YOUR_PASSWORD"
+
+youtube:
+  enabled: true
+  client_secrets_file: "youtube_client_secrets.json"
+
+naver_blog:
+  enabled: true
+  naver_id: "YOUR_ID"
+  naver_password: "YOUR_PASSWORD"
+  blog_id: "YOUR_BLOG_ID"
+
+wordpress:
+  enabled: true
+  url: "https://your-site.com"
+  username: "YOUR_USERNAME"
+  password: "YOUR_APP_PASSWORD"
+```
 
 ---
 
-**마지막 업데이트**: 2026-05-10
+## 📊 플랫폼별 특징
+
+| 플랫폼 | 인증 | 카드뉴스 | 영상 | 예약 | 비용 |
+|--------|------|---------|------|------|------|
+| Instagram | ID/PW | ✅ 캐러셀 | ✅ | ✅ | 무료 |
+| Threads | ID/PW | ✅ 캐러셀 | - | - | 무료 |
+| YouTube | OAuth | - | ✅ | ✅ | 무료 |
+| 네이버 블로그 | ID/PW | ✅ | ✅ | - | 무료 |
+| WordPress | 자체 | ✅ | ✅ | ✅ | 자체 호스팅 |
+
+---
+
+## 🔧 트러블슈팅
+
+### API 키 에러
+```
+"오류: OpenAI가 비활성화되어 있습니다"
+
+→ config.yaml에서 openai.enabled: true 확인
+→ api_key 입력 확인
+```
+
+### 인스타그램/Threads 로그인 실패
+```
+"Selenium 로그인 실패"
+
+→ username/password 다시 확인
+→ 2단계 인증 비활성화 후 재시도
+→ 비정상 접속 차단된 경우 앱 비밀번호 사용
+```
+
+### 이미지 생성 타임아웃
+```
+"DALL-E 이미지 생성 실패"
+
+→ 네트워크 확인
+→ API 쿼터 확인 (platform.openai.com/account/api-limits)
+→ 프롬프트 단순화
+```
+
+---
+
+## 📈 성능 팁
+
+1. **배치 생성이 더 빠름**
+   ```bash
+   # 느림: 플랫폼별로 각각 생성
+   python main.py generate "주제" -p instagram
+   python main.py generate "주제" -p threads
+   
+   # 빠름: 한 번에 생성
+   python main.py generate-batch "주제" -p instagram -p threads
+   ```
+
+2. **가격 최적화**
+   - `gpt-4o` (비쌈, 추천) vs `gpt-3.5-turbo` (더 저렴)
+   - DALL-E `standard` (빠름) vs `hd` (고품질)
+
+3. **인스타그램 카드뉴스**
+   - 최대 10장까지 가능 (권장 3~5장)
+   - 정사각형 이미지 권장
+
+---
+
+## 🎓 학습 자료
+
+- [ChatGPT API 가이드](https://platform.openai.com/docs/guides/gpt)
+- [DALL-E 이미지 생성](https://platform.openai.com/docs/guides/images)
+- [Meta Graph API](https://developers.facebook.com/docs/instagram-api)
+- [YouTube 데이터 API](https://developers.google.com/youtube/v3)
+
+---
+
+## 📞 피드백 & 이슈
+
+문제가 있으신가요?
+1. `python main.py check-config`로 설정 확인
+2. 각 플랫폼의 API 상태 확인
+3. 네트워크 연결 확인
+
+---
+
+**마지막 업데이트**: 2026-05-11  
+**버전**: 2.0 (AI 자동 생성 지원)
