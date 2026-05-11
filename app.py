@@ -188,8 +188,11 @@ st.markdown("""
 # 자동 로그인 (세션 상태)
 if "auto_logged_in" not in st.session_state:
     st.session_state.auto_logged_in = True
+if "username" not in st.session_state:
     st.session_state.username = "무료사용자"
+if "is_premium" not in st.session_state:
     st.session_state.is_premium = False
+if "current_page" not in st.session_state:
     st.session_state.current_page = "home"
 
 # 카테고리별 메뉴 정의
